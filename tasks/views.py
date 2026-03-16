@@ -1,6 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, DetailView, DeleteView
+from django.views.generic import ListView, CreateView, DetailView, DeleteView, UpdateView
 
 
 from .models import Category, ListObject
@@ -46,6 +46,20 @@ class CategoryDetailView(LoginRequiredMixin, DetailView):
     template_name = "tasks/category_detail.html"
     context_object_name = "category"
 
+    def get_queryset(self):
+        return Category.objects.filter(owner=self.request.user)
+
+class CategoryUpdateView(LoginRequiredMixin, UpdateView):
+    model = Category
+    form_class = CategoryForm
+    template_name = "tasks/category_form.html"
+
+    def get_queryset(self):
+        return Category.objects.filter(owner=self.request.user)
+
+    def get_success_url(self):
+        return reverse_lazy("category_detail", kwargs={"pk": self.object.pk})
+
 class ListObjectCreateView(LoginRequiredMixin, CreateView):
 
     model = ListObject
@@ -54,8 +68,17 @@ class ListObjectCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
 
+        category = Category.objects.get(
+            id=self.kwargs["pk"],
+            owner=self.request.user
+        )
+
         form.instance.owner = self.request.user
-        form.instance.category_id = self.kwargs["pk"]
+        form.instance.category = category
+        
+        first_status = category.statuses.first()
+        if first_status:
+            form.instance.status = first_status
 
         return super().form_valid(form)
 
@@ -66,6 +89,21 @@ class ListObjectDeleteView(LoginRequiredMixin, DeleteView):
 
     model = ListObject
     template_name = "tasks/object_confirm_delete.html"
+
+    def get_success_url(self):
+        return reverse_lazy(
+            "category_detail",
+            kwargs={"pk": self.object.category.id}
+        )
+
+class ListObjectUpdateView(LoginRequiredMixin, UpdateView):
+
+    model = ListObject
+    form_class = ListObjectForm
+    template_name = "tasks/object_form.html"
+
+    def get_queryset(self):
+        return ListObject.objects.filter(owner=self.request.user)
 
     def get_success_url(self):
         return reverse_lazy(

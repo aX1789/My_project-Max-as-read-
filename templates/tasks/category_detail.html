@@ -4,40 +4,54 @@
 
 <h1>{{ category.name }}</h1>
 
+<a href="{% url 'category_update' category.id %}">
+    Edit Category
+</a>
+
+<a href="{% url 'category_delete' category.id %}">
+    Delete Category
+</a>
+
+<hr>
+
 <h3>Statuses</h3>
 
 <a href="{% url 'object_create' category.id %}">
-Add item
+    Add item
 </a>
-
 
 {% for status in category.statuses.all %}
 
-<h3>{{ status.name }}</h3>
+    <h3>{{ status.name }}</h3>
 
-<ul>
+    <ul>
+        {% for item in status.list_objects.all %}
+            <li>
 
-    {% for item in status.list_objects.all %}
-        <li>
+                {{ item.name }}
 
-        {{ item.name }}
-        <a href="{% url 'object_delete' item.id %}">
-        Delete
-        </a>
-        
-        {% if item.rating %}
-            ⭐ {{ item.rating }}
-        {% endif %}
-        {% if item.favorite %}
-        ❤️
-        {% endif %}
+                <a href="{% url 'object_update' item.id %}">
+                    Edit
+                </a>
 
-        </li>
-    {% empty %}
-        <li>No items yet</li>
-    {% endfor %}
+                <a href="{% url 'object_delete' item.id %}">
+                    Delete
+                </a>
 
-</ul>
+                {% if item.rating %}
+                    ⭐ {{ item.rating }}
+                {% endif %}
+
+                {% if item.favorite %}
+                    ❤️
+                {% endif %}
+
+            </li>
+
+        {% empty %}
+            <li>No items yet</li>
+        {% endfor %}
+    </ul>
 
 {% endfor %}
 
