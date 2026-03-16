@@ -1,6 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, DetailView, DeleteView, UpdateView
+from django.views.generic import (
+    ListView,
+    CreateView,
+    DetailView,
+    DeleteView,
+    UpdateView,
+)
 
 
 from .models import Category, ListObject
@@ -19,6 +25,7 @@ class CategoryCreateView(LoginRequiredMixin, CreateView):
         form.instance.owner = self.request.user
         return super().form_valid(form)
 
+
 class CategoryListView(LoginRequiredMixin, ListView):
 
     model = Category
@@ -28,6 +35,7 @@ class CategoryListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         return Category.objects.filter(owner=self.request.user)
 
+
 class CategoryDeleteView(LoginRequiredMixin, DeleteView):
 
     model = Category
@@ -36,10 +44,11 @@ class CategoryDeleteView(LoginRequiredMixin, DeleteView):
 
     def get_success_url(self):
         return reverse_lazy("category_list")
-    
+
     def get_queryset(self):
         return Category.objects.filter(owner=self.request.user)
-    
+
+
 class CategoryDetailView(LoginRequiredMixin, DetailView):
 
     model = Category
@@ -48,6 +57,7 @@ class CategoryDetailView(LoginRequiredMixin, DetailView):
 
     def get_queryset(self):
         return Category.objects.filter(owner=self.request.user)
+
 
 class CategoryUpdateView(LoginRequiredMixin, UpdateView):
     model = Category
@@ -60,6 +70,7 @@ class CategoryUpdateView(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse_lazy("category_detail", kwargs={"pk": self.object.pk})
 
+
 class ListObjectCreateView(LoginRequiredMixin, CreateView):
 
     model = ListObject
@@ -68,14 +79,11 @@ class ListObjectCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
 
-        category = Category.objects.get(
-            id=self.kwargs["pk"],
-            owner=self.request.user
-        )
+        category = Category.objects.get(id=self.kwargs["pk"], owner=self.request.user)
 
         form.instance.owner = self.request.user
         form.instance.category = category
-        
+
         first_status = category.statuses.first()
         if first_status:
             form.instance.status = first_status
@@ -84,17 +92,16 @@ class ListObjectCreateView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse_lazy("category_detail", kwargs={"pk": self.kwargs["pk"]})
-    
+
+
 class ListObjectDeleteView(LoginRequiredMixin, DeleteView):
 
     model = ListObject
     template_name = "tasks/object_confirm_delete.html"
 
     def get_success_url(self):
-        return reverse_lazy(
-            "category_detail",
-            kwargs={"pk": self.object.category.id}
-        )
+        return reverse_lazy("category_detail", kwargs={"pk": self.object.category.id})
+
 
 class ListObjectUpdateView(LoginRequiredMixin, UpdateView):
 
@@ -106,7 +113,4 @@ class ListObjectUpdateView(LoginRequiredMixin, UpdateView):
         return ListObject.objects.filter(owner=self.request.user)
 
     def get_success_url(self):
-        return reverse_lazy(
-            "category_detail",
-            kwargs={"pk": self.object.category.id}
-        )
+        return reverse_lazy("category_detail", kwargs={"pk": self.object.category.id})

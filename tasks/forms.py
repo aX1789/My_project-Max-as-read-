@@ -7,7 +7,16 @@ class CategoryForm(forms.ModelForm):
         model = Category
         fields = ["name", "template"]
 
+
 class ListObjectForm(forms.ModelForm):
     class Meta:
         model = ListObject
-        fields = ["name", "status", "notes", "rating", "favorite", "started_at", "finished_at"]
+        fields = [
+            "name",
+            "status",
+            "notes",
+            "rating",
+            "favorite",
+            "started_at",
+            "finished_at",
+        ]

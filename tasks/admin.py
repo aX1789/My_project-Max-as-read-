@@ -2,11 +2,10 @@ from django.contrib import admin
 from .models import Task, Category, Status, ListObject
 
 
-
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ("name", "owner", "created_at")
-    search_fields = ("name", "owner") 
+    search_fields = ("name", "owner")
     list_filter = ("created_at", "owner")
 
 

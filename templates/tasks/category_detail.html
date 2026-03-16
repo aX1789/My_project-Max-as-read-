@@ -22,36 +22,36 @@
 
 {% for status in category.statuses.all %}
 
-    <h3>{{ status.name }}</h3>
+<h3>{{ status.name }}</h3>
 
-    <ul>
-        {% for item in status.list_objects.all %}
-            <li>
+<ul>
+    {% for item in status.list_objects.all %}
+    <li>
 
-                {{ item.name }}
+        {{ item.name }}
 
-                <a href="{% url 'object_update' item.id %}">
-                    Edit
-                </a>
+        <a href="{% url 'object_update' item.id %}">
+            Edit
+        </a>
 
-                <a href="{% url 'object_delete' item.id %}">
-                    Delete
-                </a>
+        <a href="{% url 'object_delete' item.id %}">
+            Delete
+        </a>
 
-                {% if item.rating %}
-                    ⭐ {{ item.rating }}
-                {% endif %}
+        {% if item.rating %}
+        ⭐ {{ item.rating }}
+        {% endif %}
 
-                {% if item.favorite %}
-                    ❤️
-                {% endif %}
+        {% if item.favorite %}
+        ❤️
+        {% endif %}
 
-            </li>
+    </li>
 
-        {% empty %}
-            <li>No items yet</li>
-        {% endfor %}
-    </ul>
+    {% empty %}
+    <li>No items yet</li>
+    {% endfor %}
+</ul>
 
 {% endfor %}
 

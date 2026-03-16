@@ -11,16 +11,16 @@
 
 {% if categories %}
 
-    <ul>
-        {% for category in categories %}
-            <li>
-                <a href="{% url 'category_detail' category.id %}">   
-                    {{ category.name }}
-                </a>
-                <a href="{% url 'category_delete' category.id %}">Delete</a>
-            </li>
-        {% endfor %}
-    </ul>
+<ul>
+    {% for category in categories %}
+    <li>
+        <a href="{% url 'category_detail' category.id %}">
+            {{ category.name }}
+        </a>
+        <a href="{% url 'category_delete' category.id %}">Delete</a>
+    </li>
+    {% endfor %}
+</ul>
 
 {% else %}
 
