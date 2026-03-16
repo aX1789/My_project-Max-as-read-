@@ -1,18 +1,13 @@
-from django.utils import timezone
-
 from django import forms
-from .models import Task
+from .models import Category, ListObject
 
-class TaskForm(forms.ModelForm):
+
+class CategoryForm(forms.ModelForm):
     class Meta:
-        model = Task
-        fields = ['title', 'description', 'deadline']
+        model = Category
+        fields = ["name", "template"]
 
-    def clean_deadline(self):
-        deadline = self.cleaned_data.get('deadline')
-        today = timezone.now().date()
-
-        if deadline < today:
-            raise forms.ValidationError("Deadline cannot be in the past.")
-
-        return deadline
+class ListObjectForm(forms.ModelForm):
+    class Meta:
+        model = ListObject
+        fields = ["name", "status", "notes", "rating", "favorite", "started_at", "finished_at"]

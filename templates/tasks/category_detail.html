@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>{{ category.name }}</h1>
+
+<h3>Statuses</h3>
+
+<a href="{% url 'object_create' category.id %}">
+Add item
+</a>
+
+
+{% for status in category.statuses.all %}
+
+<h3>{{ status.name }}</h3>
+
+<ul>
+
+    {% for item in status.list_objects.all %}
+        <li>
+
+        {{ item.name }}
+        <a href="{% url 'object_delete' item.id %}">
+        Delete
+        </a>
+        
+        {% if item.rating %}
+            ⭐ {{ item.rating }}
+        {% endif %}
+        {% if item.favorite %}
+        ❤️
+        {% endif %}
+
+        </li>
+    {% empty %}
+        <li>No items yet</li>
+    {% endfor %}
+
+</ul>
+
+{% endfor %}
+
+{% endblock %}

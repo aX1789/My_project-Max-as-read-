@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Your Categories</h1>
+
+<a href="{% url 'category_create' %}">Create new category</a>
+
+
+<hr>
+
+{% if categories %}
+
+    <ul>
+        {% for category in categories %}
+            <li>
+                <a href="{% url 'category_detail' category.id %}">   
+                    {{ category.name }}
+                </a>
+                <a href="{% url 'category_delete' category.id %}">Delete</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+{% else %}
+
+<p>You don't have any lists yet.</p>
+
+{% endif %}
+
+{% endblock %}
