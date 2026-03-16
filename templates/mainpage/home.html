@@ -1,5 +1,95 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Welcome</h1>
+
+<style>
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+/* приховати navbar тільки на головній */
+.navbar {
+    display: none;
+}
+
+.hero {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
+
+.section {
+    position: absolute;
+    width: 50%;
+    height: 50%;
+    background-size: cover;
+    background-position: center;
+}
+
+.anime { top: 0; left: 0; background-image: url('https://images.unsplash.com/photo-1614583225154-5fcf6a8e6d0f'); }
+.books { top: 0; right: 0; background-image: url('https://images.unsplash.com/photo-1519682337058-a94d519337bc'); }
+.games { bottom: 0; left: 0; background-image: url('https://images.unsplash.com/photo-1606813907291-d86efa9b94db'); }
+.movies { bottom: 0; right: 0; background-image: url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba'); }
+
+.section::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+}
+
+.center {
+    position: relative;
+    z-index: 2;
+}
+
+h1 {
+    font-size: 4rem;
+    margin: 0;
+}
+
+button {
+    margin-top: 20px;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 30px;
+    background: white;
+    color: black;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: scale(1.1);
+}
+
+</style>
+
+<div class="hero">
+
+    <div class="section anime"></div>
+    <div class="section books"></div>
+    <div class="section games"></div>
+    <div class="section movies"></div>
+
+    <div class="center">
+        <h1>Welcome to Checklist "AX1"</h1>
+
+        <a href="{% url 'category_list' %}">
+            <button>Start</button>
+        </a>
+
+    </div>
+
+</div>
+
 {% endblock %}

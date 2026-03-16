@@ -9,6 +9,7 @@
 </head>
 <body>
 
+{% if not request.path == "/" %}
 <nav>
     {% if user.is_authenticated %}
         <a href="{% url 'category_list' %}">My Tasks</a> |
@@ -25,6 +26,8 @@
     {% endif %}
 </nav>
 
+<hr>
+{% endif %}
 <hr>
 
 {% block content %}
